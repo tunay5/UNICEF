@@ -35,9 +35,13 @@ dataflows <- function(){
 get_data <- function(dataflow, filter = "all", start = NULL, end = NULL){
   data <- dataflows()
 
-  agencyID <- data[data[,1]==dataflow,4]
+  agencyID <- data[data[,2]==dataflow,4]
 
-  url <- gsub(" ","",paste0("https://sdmx.data.unicef.org/ws/public/sdmxapi/rest/data/",agencyID,",",dataflow,",1.0/",filter,"?startPeriod=",start,"&endPeriod=",end))
+  if(is.null(start) && is.null(end)){
+    url <- gsub(" ","",paste0("https://sdmx.data.unicef.org/ws/public/sdmxapi/rest/data/",agencyID,",",dataflow,",1.0/",filter,"?format=sdmx-compact-2.1"))
+  }else{
+    url <- gsub(" ","",paste0("https://sdmx.data.unicef.org/ws/public/sdmxapi/rest/data/",agencyID,",",dataflow,",1.0/",filter,"?startPeriod=",start,"&endPeriod=",end))
+  }
 
   page <- xml2::read_xml(url)
 
@@ -46,7 +50,7 @@ get_data <- function(dataflow, filter = "all", start = NULL, end = NULL){
   list_1 <- list()
 
   for(i in 1:length(main)){
-    d_child <- xml2::xml_children(main)
+    d_child <- xml2::xml_children(main[i])
     attr <- d_child |>
       purrr::map(~names(xml2::xml_attrs(.))) |>
       unlist() |>
