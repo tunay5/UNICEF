@@ -4,14 +4,14 @@
 \alias{get_data}
 \title{get_data}
 \usage{
-get_data(dataflow, filter = "all", start = NULL, end = NULL)
+get_data(dataflow, filter = NULL, start = NULL, end = NULL)
 }
 \description{
 Returns the dataset for the selected dataflow and filtered information
 }
 \details{
-When writing \code {filter}, write in a vector form and add dot between each filter objects: \code{c("DZA.2..M18T23.")}
+When writing \code{filter}, write in a list form that includes vectors for each objects: \code{list(c("DZA"),c("2"),c(NA),c(NA),c(NA))}
 }
 \examples{
-\code{get_data("CAP 2030", filter = c("DZA.2..."), start = 2020, end = 2020)}
+\code{get_data("CAP 2030", filter = list(c("DZA"),c("2"),c(NA),c(NA),c(NA)), start = 2020, end = 2020)}
 }

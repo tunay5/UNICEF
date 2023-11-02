@@ -54,7 +54,7 @@ dataflows()
     ## 9              CD2030
     ## 10             CD2030
 
-## get_data(dataflow, filter = NULL, start = NULL, end = NULL)
+## get_data()
 
 With the function, you will be able to fetch data based on the dataflow
 and filter features, from the database of UNICEF.
@@ -63,7 +63,7 @@ For example, if you want to fetch the data of child mortality rate
 (under 5 years old) in São Paulo, from the years of 2010 and 2012:
 
 ``` r
-get_data("BRAZIL_CO", filter = c("SP.MORTALIDADEINFANCIAMENOR5.."), start = 2010, end = 2012)
+get_data(dataflow = "BRAZIL_CO", filter = c("SP.MORTALIDADEINFANCIAMENOR5.."), start = 2010, end = 2012)
 ```
 
     ## [[1]]

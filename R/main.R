@@ -27,20 +27,37 @@ dataflows <- function(){
 #' @param filter
 #' @param start
 #' @param end
-#' @details When writing \code {filter}, write in a vector form and add dot between each filter objects: \code{c("DZA.2..M18T23.")}
+#' @details When writing \code{filter}, write in a list form that includes vectors for each objects: \code{list(c("DZA"),c("2"),c(NA),c(NA),c(NA))}
 #' @return
 #' @export
 #' @description Returns the dataset for the selected dataflow and filtered information
-#' @examples \code{get_data("CAP 2030", filter = c("DZA.2..."), start = 2020, end = 2020)}
-get_data <- function(dataflow, filter = "all", start = NULL, end = NULL){
+#' @examples \code{get_data("CAP 2030", filter = list(c("DZA"),c("2"),c(NA),c(NA),c(NA)), start = 2020, end = 2020)}
+get_data <- function(dataflow, filter = NULL, start = NULL, end = NULL){
   data <- dataflows()
 
   agencyID <- data[data[,2]==dataflow,4]
 
-  if(is.null(start) && is.null(end)){
-    url <- gsub(" ","",paste0("https://sdmx.data.unicef.org/ws/public/sdmxapi/rest/data/",agencyID,",",dataflow,",1.0/",filter,"?format=sdmx-compact-2.1"))
+  if(length(filter)==0){
+    vec_1 <- "all"
   }else{
-    url <- gsub(" ","",paste0("https://sdmx.data.unicef.org/ws/public/sdmxapi/rest/data/",agencyID,",",dataflow,",1.0/",filter,"?startPeriod=",start,"&endPeriod=",end))
+    if(is.na(filter[[1]])){
+      vec_1 = ""
+    }else{
+      vec_1 <- filter[[1]]
+    }
+    for (i in 2:length(filter)) {
+      if(is.na(filter[[i]])){
+        vec_1 = paste0(vec_1,".")
+      }else{
+        vec_1 = paste0(vec_1, ".", filter[[i]])
+      }
+    }
+  }
+
+  if(is.null(start) && is.null(end)){
+    url <- gsub(" ","",paste0("https://sdmx.data.unicef.org/ws/public/sdmxapi/rest/data/",agencyID,",",dataflow,",1.0/",vec_1,"?format=sdmx-compact-2.1"))
+  }else{
+    url <- gsub(" ","",paste0("https://sdmx.data.unicef.org/ws/public/sdmxapi/rest/data/",agencyID,",",dataflow,",1.0/",vec_1,"?startPeriod=",start,"&endPeriod=",end))
   }
 
   page <- xml2::read_xml(url)
