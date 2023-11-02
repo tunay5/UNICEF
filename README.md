@@ -63,8 +63,11 @@ For example, if you want to fetch the data of child mortality rate
 (under 5 years old) in São Paulo, from the years of 2010 and 2012:
 
 ``` r
-get_data(dataflow = "BRAZIL_CO", filter = c("SP.MORTALIDADEINFANCIAMENOR5.."), start = 2010, end = 2012)
+get_data(dataflow = "BRAZIL_CO", filter = list(c("SP"),c("MORTALIDADEINFANCIAMENOR5"),c(NA), c(NA)), start = 2010, end = 2012)
 ```
+
+As you can see, for variable you should create a list and add each
+object in the in the order that UNICEF represents in its website.
 
     ## [[1]]
     ##   TIME_PERIOD OBS_VALUE                             DATA_SOURCE
